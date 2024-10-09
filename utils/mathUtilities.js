@@ -16,8 +16,8 @@ const problems = [
     answer: 50,
   },
   {
-    problem: "10 - 25",
-    answer: -15,
+    problem: "25 - 10",
+    answer: 15,
   },
   {
     problem: "100 - 50",
@@ -75,9 +75,8 @@ let answerStreak = 0;
 
 function getQuestion() {
   const question = Math.floor(Math.random() * problems.length);
-  const problem = problems[question];
-  const answer = problem.answer;
-  return { problem, answer };
+  const streak = answerStreak;
+  return problems[(question, streak)];
 }
 
 /**
@@ -89,7 +88,7 @@ function getQuestion() {
  */
 
 function checkAnswer(question, answer) {
-  if (question.answer === answer) {
+  if (problems.answer === answer) {
     isCorrectAnswer();
   } else {
     inCorrectAnswer();
@@ -99,14 +98,17 @@ function checkAnswer(question, answer) {
 
 function isCorrectAnswer(question, answer) {
   answerStreak++;
+  console.log(`Correct! Your streak is now ${answerStreak}`);
 }
 
 function inCorrectAnswer(question, answer) {
-  return question.answer !== answer, answerStreak;
+  return problems.answer !== answer;
+  answerStreak = 0;
 }
 
 module.exports = {
   getQuestion,
   isCorrectAnswer,
   inCorrectAnswer,
+  checkAnswer,
 };

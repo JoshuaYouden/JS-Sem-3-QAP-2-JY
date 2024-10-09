@@ -1,5 +1,10 @@
 const express = require("express");
-const { getQuestion, isCorrectAnswer } = require("./utils/mathUtilities");
+const {
+  getQuestion,
+  isCorrectAnswer,
+  inCorrectAnswer,
+  checkAnswer,
+} = require("./utils/mathUtilities");
 const app = express();
 const port = 3000;
 
@@ -13,7 +18,12 @@ app.get("/", (req, res) => {
 });
 
 app.get("/quiz", (req, res) => {
-  res.render("quiz", { question: getQuestion(), correct: isCorrectAnswer() });
+  res.render("quiz", {
+    question: getQuestion(),
+    correct: isCorrectAnswer(),
+    notCorrect: inCorrectAnswer(),
+    check: checkAnswer(),
+  });
 });
 
 app.get("/leaderboard", (req, res) => {
@@ -30,15 +40,19 @@ app.post("/quiz", (req, res) => {
   console.log(`Answer: ${answer}`);
   const question = getQuestion();
   const correct = isCorrectAnswer(question, answer);
+  const check = checkAnswer(question, answer);
   const incorrect = inCorrectAnswer(question, answer);
+  if (check === inCorrectAnswer(question, answer)) {
+    res.render("complete", { streak: answerStreak });
+  }
 
   //answer will contain the value the user entered on the quiz page
   //Logic must be added here to check if the answer is correct, then track the streak and redirect properly
-  if (correct) {
+  if (check === correct) {
     isCorrectAnswer();
     res.render("quiz", { question: getQuestion(), streak: answerStreak });
   } else {
-    if (incorrect) {
+    if (check === incorrect) {
       inCorrectAnswer();
       res.render("complete", { streak: 0 });
     }
