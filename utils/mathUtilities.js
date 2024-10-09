@@ -87,6 +87,15 @@ function getQuestion() {
  * @returns {boolean} True if the answer was correct, false otherwise.
  */
 
+function isCorrectAnswer(question, answer) {
+  answerStreak++;
+  console.log(`Correct! Your streak is now ${answerStreak}`);
+}
+
+function inCorrectAnswer(question, answer) {
+  console.log(`Incorrect! Your streak is now ${answerStreak}`);
+}
+
 function checkAnswer(question, answer) {
   if (problems.answer === answer) {
     isCorrectAnswer();
@@ -96,14 +105,8 @@ function checkAnswer(question, answer) {
   return;
 }
 
-function isCorrectAnswer(question, answer) {
-  answerStreak++;
-  console.log(`Correct! Your streak is now ${answerStreak}`);
-}
-
-function inCorrectAnswer(question, answer) {
-  return problems.answer !== answer;
-  answerStreak = 0;
+function getStreak() {
+  return answerStreak;
 }
 
 module.exports = {
@@ -111,4 +114,5 @@ module.exports = {
   isCorrectAnswer,
   inCorrectAnswer,
   checkAnswer,
+  getStreak,
 };
