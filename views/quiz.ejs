@@ -1,15 +1,24 @@
 <!-- The header ejs template is included to ensure our CSS and fonts are loaded -->
 <%- include('partials/header') %>
 
+<body>
     <!-- Display question or whatever else here -->
+     <div class="question">
     <h1>Math Quiz</h1>
     <p>Answer the question below:</p>
 
     <form action="/quiz" method="POST">
+        <div class="problem">
+        <h3>What is <%= question.problem %></h3> %></h3>
+    </div>
         <!-- This handles sending the user's answer back to the server. It's not recommended you modify this, as you shouldn't need to -->
         <label for="answer">Your Answer:</label>
         <input type="text" id="answer" name="answer" required>
         <button type="submit">Submit</button>
+        <div class="problem">
+        <p>Streak: <%= question.answerStreak %></p>
+    </div>
     </form>
+</div>
 </body>
 </html>

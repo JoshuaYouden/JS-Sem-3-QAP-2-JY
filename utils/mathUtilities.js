@@ -48,8 +48,8 @@ const problems = [
     answer: 50,
   },
   {
-    problem: "10 / 25",
-    answer: 0.4,
+    problem: "250 / 25",
+    answer: 10,
   },
   {
     problem: "150 / 10",
@@ -71,9 +71,13 @@ const problems = [
  * @returns {object} The randomly generated math question
  */
 
+let answerStreak = 0;
+
 function getQuestion() {
   const question = Math.floor(Math.random() * problems.length);
-  return problems[question];
+  const problem = problems[question];
+  const answer = problem.answer;
+  return { problem, answer };
 }
 
 /**
@@ -83,15 +87,26 @@ function getQuestion() {
  * @param {*} answer The potential answer
  * @returns {boolean} True if the answer was correct, false otherwise.
  */
-function isCorrectAnswer(question, answer) {
+
+function checkAnswer(question, answer) {
   if (question.answer === answer) {
-    return true;
+    isCorrectAnswer();
   } else {
-    return false;
+    inCorrectAnswer();
   }
+  return;
+}
+
+function isCorrectAnswer(question, answer) {
+  answerStreak++;
+}
+
+function inCorrectAnswer(question, answer) {
+  return question.answer !== answer, answerStreak;
 }
 
 module.exports = {
   getQuestion,
   isCorrectAnswer,
+  inCorrectAnswer,
 };
