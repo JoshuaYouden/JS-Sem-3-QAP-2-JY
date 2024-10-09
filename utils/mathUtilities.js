@@ -65,13 +65,13 @@ const problems = [
   },
 ];
 
+let answerStreak = 0;
+
 /**
  * Gets a random multiplication, division, subtraction or addition question
  *
  * @returns {object} The randomly generated math question
  */
-
-let answerStreak = 0;
 
 function getQuestion() {
   const question = Math.floor(Math.random() * problems.length);

@@ -8,6 +8,7 @@ const {
 } = require("./utils/mathUtilities");
 const app = express();
 const port = 3000;
+let answerStreak = 0;
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true })); // For parsing form data
@@ -46,9 +47,6 @@ app.post("/quiz", (req, res) => {
   const correct = isCorrectAnswer(question, answer);
   const check = checkAnswer(question, answer);
   const incorrect = inCorrectAnswer(question, answer);
-  if (check === inCorrectAnswer(question, answer)) {
-    res.render("complete", { streak: getStreak() });
-  }
 
   //answer will contain the value the user entered on the quiz page
   //Logic must be added here to check if the answer is correct, then track the streak and redirect properly
