@@ -8,7 +8,59 @@ const {
 } = require("./utils/mathUtilities");
 const app = express();
 const port = 3000;
-let answerStreak = 0;
+
+const users = [
+  {
+    name: "Emily",
+    streak: 2,
+    date: "2024-01-01",
+  },
+  {
+    name: "Liam",
+    streak: 6,
+    date: "2024-10-01",
+  },
+  {
+    name: "Ava",
+    streak: 3,
+    date: "2024-05-21",
+  },
+  {
+    name: "Ethan",
+    streak: 3,
+    date: "2024-06-15",
+  },
+  {
+    name: "Sophia",
+    streak: 15,
+    date: "2024-04-02",
+  },
+  {
+    name: "Jackson",
+    streak: 5,
+    date: "2024-09-04",
+  },
+  {
+    name: "Mia",
+    streak: 12,
+    date: "2024-02-01",
+  },
+  {
+    name: "Noah",
+    streak: 9,
+    date: "2024-08-18",
+  },
+  {
+    name: "Isabella",
+    streak: 6,
+    date: "2024-03-29",
+  },
+  {
+    name: "Oliver",
+    streak: 14,
+    date: "2024-07-05",
+  },
+];
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true })); // For parsing form data
@@ -32,11 +84,23 @@ app.get("/quiz", (req, res) => {
 });
 
 app.get("/leaderboard", (req, res) => {
-  res.render("leaderboard");
+  res.render("leaderboard", { answerStreak: getStreak(), users: users });
 });
 
 app.get("/complete", (req, res) => {
   res.render("complete", { answerStreak: getStreak() });
+});
+
+app.post("/leaderboard", (req, res) => {
+  const { answerStreak } = req.body;
+  const { users } = req.body;
+  // const users = users;
+  console.log(`Answer streak: ${answerStreak}`);
+});
+
+app.post("/complete", (req, res) => {
+  const { answerStreak } = req.body;
+  console.log(`Answer streak: ${answerStreak}`);
 });
 
 //Handles quiz submissions.
@@ -45,19 +109,14 @@ app.post("/quiz", (req, res) => {
   console.log(`Answer: ${answer}`);
   const question = getQuestion();
   const correct = isCorrectAnswer(question, answer);
-  const check = checkAnswer(question, answer);
-  const incorrect = inCorrectAnswer(question, answer);
+  const notCorrect = inCorrectAnswer(question, answer);
 
   //answer will contain the value the user entered on the quiz page
   //Logic must be added here to check if the answer is correct, then track the streak and redirect properly
-  if (check === correct) {
+  if (answer === question.answer) {
     isCorrectAnswer();
-    res.render("quiz", { question: getQuestion(), answerStreak: getStreak() });
   } else {
-    if (check === incorrect) {
-      inCorrectAnswer();
-      res.render("complete", { streak: 0 });
-    }
+    inCorrectAnswer();
     //By default we'll just redirect to the homepage again.
     res.redirect("/");
   }

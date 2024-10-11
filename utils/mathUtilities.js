@@ -75,8 +75,7 @@ let answerStreak = 0;
 
 function getQuestion() {
   const question = Math.floor(Math.random() * problems.length);
-  const streak = answerStreak;
-  return problems[(question, streak)];
+  return problems[question];
 }
 
 /**
@@ -87,15 +86,14 @@ function getQuestion() {
  * @returns {boolean} True if the answer was correct, false otherwise.
  */
 
-function isCorrectAnswer(question, answer) {
+function isCorrectAnswer() {
   answerStreak++;
   console.log(`Correct! Your streak is now ${answerStreak}`);
 }
 
-function inCorrectAnswer(question, answer) {
+function inCorrectAnswer() {
   console.log(`Incorrect! Your streak is now ${answerStreak}`);
 }
-
 function checkAnswer(question, answer) {
   if (problems.answer === answer) {
     isCorrectAnswer();

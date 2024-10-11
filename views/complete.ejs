@@ -2,11 +2,21 @@
 <%- include('partials/header') %>
 
 <body>
+    <main class="main-content index_container">
     <div class="question">
     <h1>Quiz Completed!</h1>
-    <div class="problem">
-        <h3>Streak <%= answerStreak %></h3>
+    <div class="navigation__container">
+        <a href="/">
+            Home Page
+        </a>
+        <a href="/quiz">
+            Start New Quiz
+        </a>
     </div>
 </div>
+<div class="problem">
+    <h2>Your Streak: <%= answerStreak %></h2>
+</div>
+</main>
 </body>
 </html>
