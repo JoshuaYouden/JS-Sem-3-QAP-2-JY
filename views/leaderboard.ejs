@@ -8,10 +8,19 @@
         <ol>
             <% for (var i = 0; i < users.length; i++) { %>
                 <li>
-                    <p> <%= users[i].name %>: <%= users[i].streak %> questions correct  (<%= users[i].date %>) </p>
+                    <p> 
+                        <%= users[i].name %>: <%= users[i].streak %> questions correct 
+                        (<%= users[i].date ? users[i].date : users[i].currentDate %>)
+                    </p>
                 </li>
-            <% }; %>
+            <% } %>
         </ol>
+
+        <div class="navigation__container">
+        <a href="/">
+            Home Page
+        </a>
+    </div>
     </main>
 </body>
 </html>
