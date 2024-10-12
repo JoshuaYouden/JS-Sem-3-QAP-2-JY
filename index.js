@@ -65,11 +65,6 @@ const users = [
     streak: 2,
     date: "2024-03-29",
   },
-  {
-    name: "User",
-    streak: req.session.streak,
-    currentDate: new Date().toISOString().split("T")[0],
-  },
 ];
 
 app.set("view engine", "ejs");
@@ -79,31 +74,48 @@ app.use(express.static("public")); // To serve static files (e.g., CSS)
 //Some routes required for full functionality are missing here. Only get routes should be required
 app.get("/", (req, res) => {
   res.render("index", {
-    streak: getStreak(),
+    answerStreak: req.session.streak,
   });
 });
 
-app.get("/quiz", (req, res) => {
+app.get("/newquiz", (req, res) => {
   req.session.streak = 0;
   const question = getQuestion();
   req.session.currentQuestion = question;
   res.render("quiz", {
     question: question.problem,
     answer: question.answer,
-    answerStreak: getStreak(),
+    answerStreak: req.session.streak,
+  });
+});
+
+app.get("/quiz", (req, res) => {
+  const question = getQuestion();
+  req.session.currentQuestion = question;
+  res.render("quiz", {
+    question: question.problem,
+    answer: question.answer,
+    answerStreak: req.session.streak,
   });
 });
 
 app.get("/leaderboard", (req, res) => {
+  const userStreak = req.session.streak || 0;
+  const currentUser = {
+    name: "User",
+    streak: userStreak,
+    currentDate: new Date().toISOString().split("T")[0],
+  };
+  const userUpdate = [...users.slice(0, 9), currentUser];
   res.render("leaderboard", {
-    answerStreak: getStreak(),
-    users: users.slice(0, 10),
+    answerStreak: userStreak,
+    users: userUpdate,
   });
 });
 
 app.get("/complete", (req, res) => {
   res.render("complete", {
-    answerStreak: getStreak(),
+    answerStreak: req.session.streak || 0,
   });
 });
 
@@ -126,7 +138,7 @@ app.post("/quiz", (req, res) => {
   }
 
   const correctAnswer = req.session.currentQuestion.answer;
-  console.log(`Answer: ${answer}`);
+  console.log(`Users Answer: ${answer}, Correct Answer: ${correctAnswer}`);
 
   //answer will contain the value the user entered on the quiz page
   //Logic must be added here to check if the answer is correct, then track the streak and redirect properly
@@ -134,12 +146,10 @@ app.post("/quiz", (req, res) => {
     isCorrectAnswer(req);
     const newQuestion = getQuestion();
     req.session.currentQuestion = newQuestion;
-    res.redirect("/quiz");
+    return res.redirect("/quiz");
   } else {
     inCorrectAnswer();
-    res.redirect("/complete");
-    //By default we'll just redirect to the homepage again.
-    res.redirect("/");
+    return res.redirect("/complete");
   }
 });
 

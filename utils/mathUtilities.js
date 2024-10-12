@@ -86,15 +86,14 @@ function getQuestion() {
  * @param {*} answer The potential answer
  * @returns {boolean} True if the answer was correct, false otherwise.
  */
-
 function checkAnswer(question, userAnswer) {
   const correctAnswer = question.answer;
   return parseFloat(userAnswer) === correctAnswer;
 }
 
 function isCorrectAnswer(req) {
-  answerStreak++;
-  console.log(`Correct! Your streak is now ${answerStreak}`);
+  req.session.streak = (req.session.streak || 0) + 1;
+  console.log(`Correct! Your streak is now ${req.session.streak}`);
 }
 
 function inCorrectAnswer() {
